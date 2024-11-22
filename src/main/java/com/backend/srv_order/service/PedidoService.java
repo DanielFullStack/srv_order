@@ -7,6 +7,8 @@ import com.backend.srv_order.model.Pedido;
 import com.backend.srv_order.model.Produto;
 import com.backend.srv_order.repository.PedidoRepository;
 
+import io.micrometer.core.instrument.MeterRegistry;
+
 @Service
 public class PedidoService {
     @Autowired
@@ -14,6 +16,9 @@ public class PedidoService {
 
     @Autowired
     private ProcessedOrderProducer processedOrderProducer;
+
+    @Autowired
+    private MeterRegistry meterRegistry;
 
     public Pedido processarPedido(Pedido pedido) {
         // Calcula o valor total do pedido
@@ -29,6 +34,9 @@ public class PedidoService {
 
         // Envia o pedido processado ao Kafka
         processedOrderProducer.enviarPedidoProcessado(pedidoProcessado);
+
+        // Incrementa uma métrica personalizada
+        meterRegistry.counter("order.processed.count").increment();
 
         return pedidoProcessado;
     }
