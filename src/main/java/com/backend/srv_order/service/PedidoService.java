@@ -1,7 +1,5 @@
 package com.backend.srv_order.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,19 +12,24 @@ public class PedidoService {
     @Autowired
     private PedidoRepository pedidoRepository;
 
+    @Autowired
+    private ProcessedOrderProducer processedOrderProducer;
+
     public Pedido processarPedido(Pedido pedido) {
         // Calcula o valor total do pedido
         double valorTotal = pedido.getProdutos()
-                                  .stream()
-                                  .mapToDouble(Produto::getPreco)
-                                  .sum();
+                .stream()
+                .mapToDouble(Produto::getPreco)
+                .sum();
         pedido.setValorTotal(valorTotal);
         pedido.setStatus("PROCESSADO");
-        return pedidoRepository.save(pedido);
-    }
 
-    public List<Pedido> buscarPedidosPorStatus(String status) {
-        return pedidoRepository.findByStatus(status);
+        // Salva no banco de dados
+        Pedido pedidoProcessado = pedidoRepository.save(pedido);
+
+        // Envia o pedido processado ao Kafka
+        processedOrderProducer.enviarPedidoProcessado(pedidoProcessado);
+
+        return pedidoProcessado;
     }
 }
-
