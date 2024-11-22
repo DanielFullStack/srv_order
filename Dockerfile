@@ -5,10 +5,10 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Copiar o arquivo JAR da aplicação para o contêiner
-COPY target/order-service.jar order-service.jar
+COPY target/srv_order.jar srv_order.jar
 
 # Expor a porta em que a aplicação será executada
 EXPOSE 8080
 
 # Comando para iniciar a aplicação
-ENTRYPOINT ["java", "-jar", "order-service.jar"]
+ENTRYPOINT ["java", "-jar", "srv_order.jar"]
