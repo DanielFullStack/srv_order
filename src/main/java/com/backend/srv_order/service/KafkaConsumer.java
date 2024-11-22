@@ -13,7 +13,6 @@ public class KafkaConsumer {
 
     @KafkaListener(topics = "orders", groupId = "order-group")
     public void consumirPedido(Pedido pedido) {
-        System.out.println("Recebendo pedido do Kafka: " + pedido);
         pedidoService.processarPedido(pedido);
     }
 }
