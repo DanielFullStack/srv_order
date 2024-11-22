@@ -3,6 +3,7 @@ package com.backend.srv_order.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.backend.srv_order.kafka.ProcessedOrderProducer;
 import com.backend.srv_order.model.Pedido;
 import com.backend.srv_order.model.Produto;
 import com.backend.srv_order.repository.PedidoRepository;

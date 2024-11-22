@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.backend.srv_order.kafka.KafkaConsumer;
+import com.backend.srv_order.kafka.KafkaProducer;
 import com.backend.srv_order.model.Pedido;
-import com.backend.srv_order.service.KafkaProducer;
-import com.backend.srv_order.service.KafkaConsumer;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
