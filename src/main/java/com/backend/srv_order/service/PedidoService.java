@@ -22,6 +22,12 @@ public class PedidoService {
 
     public Pedido enviarPedido(Pedido pedido) {
         // Salva o pedido inicial no banco
+        double valorTotal = pedido.getProdutos()
+                .stream()
+                .mapToDouble(Produto::getPreco)
+                .sum();
+        pedido.setValorTotal(valorTotal);
+        
         pedido.setStatus("CRIADO");
         Pedido novoPedido = pedidoRepository.save(pedido);
 
