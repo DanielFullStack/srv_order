@@ -1,10 +1,10 @@
 version: '3.8'
 services:
-  app:
+  srv_order:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: order-service
+    container_name: srv_order
     ports:
       - "8080:8080" # Porta para acessar a aplicação
     environment:
