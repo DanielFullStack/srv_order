@@ -3,12 +3,11 @@ package com.backend.srv_order.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.backend.srv_order.kafka.KafkaProducer;
 import com.backend.srv_order.kafka.ProcessedOrderProducer;
 import com.backend.srv_order.model.Pedido;
 import com.backend.srv_order.model.Produto;
 import com.backend.srv_order.repository.PedidoRepository;
-
-import io.micrometer.core.instrument.MeterRegistry;
 
 @Service
 public class PedidoService {
@@ -16,10 +15,20 @@ public class PedidoService {
     private PedidoRepository pedidoRepository;
 
     @Autowired
-    private ProcessedOrderProducer processedOrderProducer;
+    private KafkaProducer kafkaProducer;
 
     @Autowired
-    private MeterRegistry meterRegistry;
+    private ProcessedOrderProducer processedOrderProducer;
+
+    public Pedido enviarPedido(Pedido pedido) {
+        // Salva o pedido inicial no banco
+        pedido.setStatus("CRIADO");
+        Pedido novoPedido = pedidoRepository.save(pedido);
+
+        // Envia o pedido para o tópico Kafka
+        kafkaProducer.enviarPedido(novoPedido);
+        return novoPedido;
+    }
 
     public Pedido processarPedido(Pedido pedido) {
         // Calcula o valor total do pedido
@@ -30,14 +39,11 @@ public class PedidoService {
         pedido.setValorTotal(valorTotal);
         pedido.setStatus("PROCESSADO");
 
-        // Salva no banco de dados
+        // Salva o pedido processado no banco
         Pedido pedidoProcessado = pedidoRepository.save(pedido);
 
         // Envia o pedido processado ao Kafka
         processedOrderProducer.enviarPedidoProcessado(pedidoProcessado);
-
-        // Incrementa uma métrica personalizada
-        meterRegistry.counter("order.processed.count").increment();
 
         return pedidoProcessado;
     }

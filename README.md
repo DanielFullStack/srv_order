@@ -115,18 +115,210 @@ A documentação interativa da API está disponível via Swagger:
 ### Exemplos de Endpoints
 
 #### Criar Pedido
-- **POST**: `/api/orders`
+- **POST**: `/api/pedidos`
 - **Body**:
-  
-  {
-    "produto": "Notebook",
-    "quantidade": 2
-  }
+
+#### Exemplo 1: Pedido com dois produtos
+```json
+{
+  "status": "RECEBIDO",
+  "produtos": [
+    {
+      "nome": "Produto A",
+      "preco": 19.99
+    },
+    {
+      "nome": "Produto B",
+      "preco": 35.50
+    }
+  ]
+}
+```
+
+#### Exemplo 2: Pedido com um único produto
+```json
+{
+  "status": "PROCESSADO",
+  "produtos": [
+    {
+      "nome": "Produto C",
+      "preco": 120.00
+    }
+  ],
+  "valorTotal": 120.00
+}
+```
+
+#### Exemplo 3: Pedido vazio (sem produtos)
+```json
+{
+  "status": "RECEBIDO",
+  "produtos": [],
+  "valorTotal": 0.00
+}
+```
+
+#### Exemplo 4: Pedido com múltiplos produtos e valor total calculado
+```json
+{
+  "status": "PROCESSADO",
+  "produtos": [
+    {
+      "nome": "Produto D",
+      "preco": 15.75
+    },
+    {
+      "nome": "Produto E",
+      "preco": 45.30
+    },
+    {
+      "nome": "Produto F",
+      "preco": 29.99
+    }
+  ],
+  "valorTotal": 91.04
+}
+```
+
+#### Exemplo 5: Pedido com produtos com preços variados
+```json
+{
+  "status": "RECEBIDO",
+  "produtos": [
+    {
+      "nome": "Produto G",
+      "preco": 10.00
+    },
+    {
+      "nome": "Produto H",
+      "preco": 99.99
+    },
+    {
+      "nome": "Produto I",
+      "preco": 5.49
+    }
+  ],
+  "valorTotal": 115.48
+}
+```
   
 
-#### Consultar Pedido
-- **GET**: `/api/orders/{id}`
+#### Processar Pedido
+- **POST**: `/api/pedidos/processar`
 
+#### Exemplo 1: Pedido válido com dois produtos
+```json
+{
+  "id": 1,
+  "status": "RECEBIDO",
+  "produtos": [
+    {
+      "id": 101,
+      "nome": "Produto X",
+      "preco": 25.00
+    },
+    {
+      "id": 102,
+      "nome": "Produto Y",
+      "preco": 50.00
+    }
+  ]
+}
+```
+
+#### Exemplo 2: Pedido válido com um único produto
+```json
+{
+  "id": 2,
+  "status": "RECEBIDO",
+  "produtos": [
+    {
+      "id": 103,
+      "nome": "Produto Z",
+      "preco": 75.50
+    }
+  ]
+}
+```
+
+#### Exemplo 3: Pedido com produtos sem preço (inválido)
+```json
+{
+  "id": 3,
+  "status": "RECEBIDO",
+  "produtos": [
+    {
+      "id": 104,
+      "nome": "Produto Sem Preço",
+      "preco": null
+    }
+  ]
+}
+```
+
+#### Exemplo 4: Pedido com status inválido
+```json
+{
+  "id": 4,
+  "status": "INVALIDO",
+  "produtos": [
+    {
+      "id": 105,
+      "nome": "Produto A",
+      "preco": 30.00
+    }
+  ]
+}
+```
+
+#### Exemplo 5: Pedido vazio (sem produtos)
+```json
+{
+  "id": 5,
+  "status": "RECEBIDO",
+  "produtos": []
+}
+```
+
+#### Exemplo 6: Pedido com valores extremos nos preços
+```json
+{
+  "id": 6,
+  "status": "RECEBIDO",
+  "produtos": [
+    {
+      "id": 106,
+      "nome": "Produto Barato",
+      "preco": 0.01
+    },
+    {
+      "id": 107,
+      "nome": "Produto Caro",
+      "preco": 99999.99
+    }
+  ]
+}
+```
+
+#### Exemplo 7: Pedido com produtos duplicados
+```json
+{
+  "id": 7,
+  "status": "RECEBIDO",
+  "produtos": [
+    {
+      "id": 108,
+      "nome": "Produto Repetido",
+      "preco": 10.00
+    },
+    {
+      "id": 108,
+      "nome": "Produto Repetido",
+      "preco": 10.00
+    }
+  ]
+}
+```
 ---
 
 ## Desenvolvimento e Debug
