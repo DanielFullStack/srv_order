@@ -1,11 +1,21 @@
-# Usar uma imagem base do OpenJDK para o ambiente de execução
-FROM openjdk:17-jdk-slim
+FROM maven:3.8.4-openjdk-17-slim AS build
 
 # Diretório de trabalho dentro do contêiner
 WORKDIR /app
 
-# Copiar o arquivo JAR da aplicação para o contêiner
-COPY target/srv_order.jar srv_order.jar
+# Copiar os arquivos do projeto
+COPY pom.xml .
+COPY src ./src
+
+# Executar o comando Maven para construir o projeto
+RUN mvn clean package -DskipTests
+
+FROM openjdk:17-jdk-slim
+
+WORKDIR /app
+
+# Copiar o arquivo JAR da aplicação do estágio de build
+COPY --from=build /app/target/srv_order-0.0.1-SNAPSHOT.jar srv_order.jar
 
 # Expor a porta em que a aplicação será executada
 EXPOSE 8080

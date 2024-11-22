@@ -28,7 +28,7 @@ Certifique-se de que os seguintes itens estão instalados na sua máquina:
 
 ## Estrutura do Projeto
 
-```
+
 ├── src
 │   ├── main
 │   │   ├── java
@@ -47,35 +47,36 @@ Certifique-se de que os seguintes itens estão instalados na sua máquina:
 ├── docker-compose.yml                      # Configuração do ambiente com Kafka e PostgreSQL
 ├── pom.xml                                 # Configuração do Maven
 └── README.md                               # Documentação
-```
+
 
 ---
 
 ## Configuração e Execução do Projeto
 
 ### 1. Clonar o Repositório
-```
+
 https://github.com/DanielFullStack/srv_order.git
 cd srv_order
-```
+
 
 ### 2. Construir o Projeto
 Certifique-se de que o Maven está instalado e compile o projeto para gerar o `.jar`:
-```
+
 mvn clean package
-```
+
 
 ### 3. Executar com Docker Compose
 Para iniciar a aplicação com todos os serviços necessários:
-```
+
 docker-compose up --build
-```
+
 
 ### 4. Acessar os Serviços
 - **Aplicação**: [http://localhost:8080](http://localhost:8080)
 - **Swagger UI**: [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
 - **PostgreSQL**: `localhost:5432` (usuário: `postgres`, senha: `postgres`)
 - **Kafka Broker**: `localhost:9092`
+- **Kafka Topics UI**: [http://localhost:8081](http://localhost:8081)
 
 ---
 
@@ -116,12 +117,12 @@ A documentação interativa da API está disponível via Swagger:
 #### Criar Pedido
 - **POST**: `/api/orders`
 - **Body**:
-```  
+  
   {
     "produto": "Notebook",
     "quantidade": 2
   }
-```  
+  
 
 #### Consultar Pedido
 - **GET**: `/api/orders/{id}`
@@ -136,39 +137,38 @@ Para executar a aplicação sem Docker:
 
 1. Certifique-se de que o PostgreSQL e o Kafka estão em execução localmente.
 2. Configure as variáveis de ambiente no `application.properties` ou via CLI:
-```   
+   
    SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/orderdb
    SPRING_KAFKA_BOOTSTRAP_SERVERS=localhost:9092
-```   
+   
 3. Inicie a aplicação:
-```   
+   
    mvn spring-boot:run
-```   
+   
 
 ### Testes Unitários
 
 Execute os testes unitários com o comando:
-```
+
 mvn test
-```
+
 
 ---
 
 ## Comandos Úteis
 
 ### Subir apenas a aplicação
-```
-docker-compose up --build app
-```
+
+docker-compose up --build -d
+
 
 ### Derrubar todos os contêineres
-```
+
 docker-compose down
-```
+
 
 ### Escalar a aplicação
-```
-docker-compose up --scale app=3
-```
+
+docker-compose up --scale srv_order=3
 
 ---
