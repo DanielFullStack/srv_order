@@ -6,6 +6,7 @@ WORKDIR /app
 # Copiar os arquivos do projeto
 COPY pom.xml .
 COPY src ./src
+COPY kafka-setup.sh ./
 
 RUN chmod +x kafka-setup.sh
 RUN mvn clean package -DskipTests
