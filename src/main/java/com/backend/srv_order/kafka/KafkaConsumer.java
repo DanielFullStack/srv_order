@@ -12,9 +12,9 @@ public class KafkaConsumer {
     @Autowired
     private PedidoService pedidoService;
 
-    @KafkaListener(topics = "orders", groupId = "order-group")
+    @KafkaListener(topics = "pedido-topic", groupId = "order-group")
     public void consumirPedido(Pedido pedido) {
-        pedidoService.processarPedido(pedido);
+        pedidoService.salvarPedido(pedido);
     }
 }
 

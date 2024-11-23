@@ -7,7 +7,7 @@ WORKDIR /app
 COPY pom.xml .
 COPY src ./src
 
-# Executar o comando Maven para construir o projeto
+RUN chmod +x kafka-setup.sh
 RUN mvn clean package -DskipTests
 
 FROM openjdk:17-jdk-slim

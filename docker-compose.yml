@@ -15,6 +15,8 @@ services:
     depends_on:
       - db
       - kafka
+    volumes:
+      - ./:/app
 
   db:
     image: postgres:15
@@ -35,6 +37,9 @@ services:
       ZOOKEEPER_CLIENT_PORT: 2181
     ports:
       - "2181:2181"
+    volumes:
+      - zookeeper-data:/var/lib/zookeeper/data
+      - zookeeper-log:/var/lib/zookeeper/log
 
   kafka:
     image: confluentinc/cp-kafka:7.5.0
@@ -51,6 +56,12 @@ services:
       KAFKA_MESSAGE_MAX_BYTES: 125829120
       KAFKA_REPLICA_FETCH_MAX_BYTES: 125829120
       KAFKA_FETCH_MAX_BYTES: 125829120
+    volumes:
+      - kafka-data:/var/lib/kafka/data
+      - ./kafka-setup.sh:/kafka-setup.sh
+    entrypoint: >
+      /etc/confluent/docker/run &
+      /bin/bash /kafka-setup.sh
 
   akhq:
     image: tchiotludo/akhq:latest
@@ -69,3 +80,6 @@ services:
 
 volumes:
   postgres-data:
+  zookeeper-data:
+  zookeeper-log:
+  kafka-data:

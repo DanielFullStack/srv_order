@@ -7,14 +7,12 @@ import org.springframework.stereotype.Service;
 import com.backend.srv_order.model.Pedido;
 
 @Service
-public class KafkaProducer {
-    private static final String TOPIC = "orders";
-
+public class KafkaProducer {    
     @Autowired
     private KafkaTemplate<String, Pedido> kafkaTemplate;
 
-    public void enviarPedido(Pedido pedido) {
-        kafkaTemplate.send(TOPIC, pedido);
+    public void enviarPedido(String topico, Pedido pedido) {
+        kafkaTemplate.send(topico, pedido);
     }
 }
 
