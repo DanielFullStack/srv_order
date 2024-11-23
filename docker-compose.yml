@@ -1,5 +1,6 @@
 services:
   srv_order:
+    image: srv_order:latest
     build:
       context: .
       dockerfile: Dockerfile
