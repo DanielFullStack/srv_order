@@ -130,4 +130,8 @@ docker-compose down
 ```
 docker-compose up --scale srv_order=3
 ```
+### Adicionar novos itens ao tópico Kafka
+Para adicionar novos itens ao tópico, utilize o seguinte formato JSON no painel de administração do Kafka:
+
+{"itens":[{"quantidade":3,"produto":{"nome":"Novo Produto","preco":10.0}},{"quantidade":2,"produto":{"nome":"Outro Produto","preco":15.0}}],"status":"RECEBIDO","valorTotal":null}
 ---
