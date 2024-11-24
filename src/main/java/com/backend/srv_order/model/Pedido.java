@@ -22,7 +22,7 @@ public class Pedido {
 
     private String status; // e.g., RECEBIDO, PROCESSADO, CANCELADO
 
-    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @ToString.Exclude // Evita loop infinito no toString()
     private List<Item> itens = new ArrayList<>();
 
