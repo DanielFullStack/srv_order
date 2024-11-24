@@ -50,7 +50,6 @@ public class PedidoService {
     }
 
     private void validarItensPedido(Pedido pedido) {
-        // Primeiro, valida se já existe um pedido com a mesma estrutura
         boolean pedidoDuplicado = verificarPedidoDuplicado(pedido);
 
         if (pedidoDuplicado) {
@@ -58,21 +57,17 @@ public class PedidoService {
             throw new RuntimeException("Pedido duplicado detectado");
         }
 
-        // Depois, valida cada item individualmente
         for (Item item : pedido.getItens()) {
             Produto produto = item.getProduto();
 
-            // Verifica se o produto já existe no banco ou precisa ser salvo
-            Produto produtoFinal = produto.getId() == null
-                    ? produtoRepository.findByProdutoNomeAndProdutoPreco(produto.getNome(), produto.getPreco())
-                    : produtoRepository.findById(produto.getId()).orElse(produto);
+            Produto produtoFinal = produtoRepository.findByProdutoNomeAndProdutoPreco(produto.getNome(),
+                    produto.getPreco());
 
             if (produtoFinal == null) {
-                logger.debug("Salvando novo produto: {}", produto);
+                logger.debug("Produto não encontrado, salvando novo produto: {}", produto);
                 produtoFinal = produtoRepository.save(produto);
             }
 
-            // Atualiza o produto no item e associa ao pedido
             item.setProduto(produtoFinal);
             item.setPedido(pedido);
         }
@@ -80,11 +75,9 @@ public class PedidoService {
 
     private boolean verificarPedidoDuplicado(Pedido pedido) {
         int itemCount = pedido.getItens().size();
-        List<String> itensAtuais = pedido.getItens().stream()
-                .map(item -> item.getProduto().getId() + "-" + item.getQuantidade())
-                .toList();
+        String status = pedido.getStatus();
 
-        Boolean pedidoDuplicado = pedidoRepository.existsPedidoWithSameStructure(itemCount, itensAtuais);
+        Boolean pedidoDuplicado = pedidoRepository.existsPedidoWithSameStructure(status, itemCount);
         return pedidoDuplicado != null && pedidoDuplicado;
     }
 

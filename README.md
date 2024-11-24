@@ -133,6 +133,15 @@ docker-compose up --scale srv_order=3
 ### Adicionar novos itens ao tópico Kafka
 Para adicionar novos itens ao tópico, utilize o seguinte formato JSON no painel de administração do Kafka:
 ```
-{"itens":[{"quantidade":3,"produto":{"nome":"Novo Produto","preco":10.0}},{"quantidade":2,"produto":{"nome":"Outro Produto","preco":15.0}}],"status":"RECEBIDO","valorTotal":null}
+{"itens":[{"quantidade":2,"produto":{"nome":"Arroz 5kg","preco":25.0}},{"quantidade":1,"produto":{"nome":"Feijão 1kg","preco":8.0}}],"status":"RECEBIDO","valorTotal":null}
+{"itens":[{"quantidade":1,"produto":{"nome":"Óleo de Soja","preco":9.0}},{"quantidade":1,"produto":{"nome":"Macarrão","preco":5.0}}],"status":"RECEBIDO","valorTotal":null}
+{"itens":[{"quantidade":2,"produto":{"nome":"Café 500g","preco":15.0}},{"quantidade":1,"produto":{"nome":"Açúcar 1kg","preco":6.0}},{"quantidade":1,"produto":{"nome":"Leite 1L","preco":7.0}}],"status":"RECEBIDO","valorTotal":null}
+{"itens":[{"quantidade":1,"produto":{"nome":"Farinha de Trigo","preco":8.0}},{"quantidade":1,"produto":{"nome":"Sal 1kg","preco":3.0}},{"quantidade":1,"produto":{"nome":"Fermento","preco":5.0}}],"status":"RECEBIDO","valorTotal":null}
+{"itens":[{"quantidade":2,"produto":{"nome":"Refrigerante 2L","preco":8.0}},{"quantidade":1,"produto":{"nome":"Suco 1L","preco":6.0}}],"status":"RECEBIDO","valorTotal":null}
+{"itens":[{"quantidade":1,"produto":{"nome":"Cerveja Pack","preco":35.0}},{"quantidade":1,"produto":{"nome":"Água Mineral","preco":2.0}}],"status":"RECEBIDO","valorTotal":null}
+{"itens":[{"quantidade":2,"produto":{"nome":"Molho de Tomate","preco":4.0}},{"quantidade":1,"produto":{"nome":"Extrato de Tomate","preco":3.0}}],"status":"RECEBIDO","valorTotal":null}
+{"itens":[{"quantidade":1,"produto":{"nome":"Biscoito","preco":5.0}},{"quantidade":1,"produto":{"nome":"Bolacha","preco":4.0}}],"status":"RECEBIDO","valorTotal":null}
+{"itens":[{"quantidade":2,"produto":{"nome":"Achocolatado","preco":12.0}},{"quantidade":1,"produto":{"nome":"Leite em Pó","preco":15.0}}],"status":"RECEBIDO","valorTotal":null}
+{"itens":[{"quantidade":1,"produto":{"nome":"Óleo de Milho","preco":12.0}},{"quantidade":1,"produto":{"nome":"Vinagre","preco":4.0}}],"status":"RECEBIDO","valorTotal":null}
 ```
 ---

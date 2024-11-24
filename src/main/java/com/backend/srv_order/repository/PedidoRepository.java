@@ -15,10 +15,15 @@ public interface PedidoRepository extends JpaRepository<Pedido, Long> {
 
     @Query("SELECT CASE WHEN COUNT(p) > 0 THEN true ELSE false END " +
             "FROM Pedido p " +
-            "JOIN p.itens i " +
-            "GROUP BY p.id " +
-            "HAVING COUNT(i) = :itemCount " +
-            "   AND SUM(CASE WHEN CONCAT(i.produto.id, '-', i.quantidade) IN :itens THEN 1 ELSE 0 END) = :itemCount")
-    Boolean existsPedidoWithSameStructure(@Param("itemCount") int itemCount, @Param("itens") List<String> itens);
+            "WHERE p.status = :status " +
+            "AND EXISTS (" +
+            "  SELECT 1 FROM Item i1 JOIN p.itens i2 " +
+            "  WHERE i1.produto.id = i2.produto.id " +
+            "  AND i1.quantidade = i2.quantidade " +
+            "  AND p.id = i2.pedido.id " +
+            "  GROUP BY p.id " +
+            "  HAVING COUNT(i1) = :itemCount " +
+            ")")
+    Boolean existsPedidoWithSameStructure(@Param("status") String status, @Param("itemCount") int itemCount);
 
 }

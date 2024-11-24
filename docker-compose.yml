@@ -68,16 +68,5 @@ services:
               properties:
                 bootstrap.servers: "kafka:9092"
 
-  kafka-setup:
-    image: confluentinc/cp-kafka:7.5.0
-    container_name: kafka-setup
-    depends_on:
-      - kafka
-    environment:
-      KAFKA_BROKER: kafka:9092
-    volumes:
-      - ./kafka-setup.sh:/kafka-setup.sh
-    entrypoint: ["bash", "/kafka-setup.sh"]
-
 volumes:
   postgres-data:
