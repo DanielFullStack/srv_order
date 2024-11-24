@@ -1,5 +1,7 @@
 package com.backend.srv_order.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,6 +23,7 @@ public class Item {
     @ManyToOne
     @JoinColumn(name = "pedido_id", nullable = false)
     @ToString.Exclude // Evita loop infinito no toString()
+    @JsonBackReference // Marca o lado "filho"
     private Pedido pedido;
 
     @ManyToOne
