@@ -1,5 +1,6 @@
 package com.backend.srv_order.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -10,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import lombok.Data;
+import lombok.ToString;
 
 @Data
 @Entity
@@ -20,10 +22,18 @@ public class Pedido {
 
     private String status; // e.g., RECEBIDO, PROCESSADO, CANCELADO
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Item> itens;
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @ToString.Exclude // Evita loop infinito no toString()
+    private List<Item> itens = new ArrayList<>();
 
     private Double valorTotal;
 
+    @Override
+    public String toString() {
+        return "Pedido{" +
+                "id=" + id +
+                ", status='" + status + '\'' +
+                ", valorTotal=" + valorTotal +
+                '}';
+    }
 }
-

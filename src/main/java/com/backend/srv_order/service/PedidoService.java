@@ -33,25 +33,59 @@ public class PedidoService {
 
     public void salvarPedido(Pedido pedido) {
         logger.info("Iniciando salvamento do pedido");
-        // Verifica duplicidade de pedido baseado no banco de dados
-        for (Item item : pedido.getItens()) {
-            Produto produto = item.getProduto();
-            if (produto.getId() == null) {
-                logger.debug("Salvando novo produto: {}", produto);
-                produto = produtoRepository.save(produto);
-                item.setProduto(produto);
-            } else {
-                boolean isDuplicado = pedidoRepository.existsByProdutoIdAndQuantidade(produto.getId(),
-                        item.getQuantidade());
-                if (isDuplicado) {
-                    logger.error("Pedido duplicado detectado para o produto ID: {}", produto.getId());
-                    throw new RuntimeException("Pedido duplicado detectado com o produto ID: " + produto.getId());
-                }
-            }
+
+        // Valida itens antes de salvar
+        validarItensPedido(pedido);
+
+        // Calcula o valor total
+        double valorTotal = pedido.getItens()
+                .stream()
+                .mapToDouble(item -> item.getProduto().getPreco() * item.getQuantidade())
+                .sum();
+        pedido.setValorTotal(valorTotal);
+
+        // Salva o pedido com os itens
+        pedidoRepository.save(pedido);
+        logger.info("Pedido salvo com sucesso com ID: {}", pedido.getId());
+    }
+
+    private void validarItensPedido(Pedido pedido) {
+        // Primeiro, valida se já existe um pedido com a mesma estrutura
+        boolean pedidoDuplicado = verificarPedidoDuplicado(pedido);
+
+        if (pedidoDuplicado) {
+            logger.error("Pedido duplicado detectado: {}", pedido);
+            throw new RuntimeException("Pedido duplicado detectado");
         }
 
-        pedidoRepository.save(pedido);
-        logger.info("Pedido salvo com sucesso");
+        // Depois, valida cada item individualmente
+        for (Item item : pedido.getItens()) {
+            Produto produto = item.getProduto();
+
+            // Verifica se o produto já existe no banco ou precisa ser salvo
+            Produto produtoFinal = produto.getId() == null
+                    ? produtoRepository.findByProdutoNomeAndProdutoPreco(produto.getNome(), produto.getPreco())
+                    : produtoRepository.findById(produto.getId()).orElse(produto);
+
+            if (produtoFinal == null) {
+                logger.debug("Salvando novo produto: {}", produto);
+                produtoFinal = produtoRepository.save(produto);
+            }
+
+            // Atualiza o produto no item e associa ao pedido
+            item.setProduto(produtoFinal);
+            item.setPedido(pedido);
+        }
+    }
+
+    private boolean verificarPedidoDuplicado(Pedido pedido) {
+        int itemCount = pedido.getItens().size();
+        List<String> itensAtuais = pedido.getItens().stream()
+                .map(item -> item.getProduto().getId() + "-" + item.getQuantidade())
+                .toList();
+
+        Boolean pedidoDuplicado = pedidoRepository.existsPedidoWithSameStructure(itemCount, itensAtuais);
+        return pedidoDuplicado != null && pedidoDuplicado;
     }
 
     public List<Pedido> listarPedidos() {

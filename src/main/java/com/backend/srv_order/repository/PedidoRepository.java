@@ -13,6 +13,12 @@ import com.backend.srv_order.model.Pedido;
 public interface PedidoRepository extends JpaRepository<Pedido, Long> {
     List<Pedido> findByStatus(String status);
 
-    @Query("SELECT COUNT(p) > 0 FROM Pedido p JOIN p.itens i WHERE i.produto.id = :produtoId AND i.quantidade = :quantidade")
-    boolean existsByProdutoIdAndQuantidade(@Param("produtoId") Long produtoId, @Param("quantidade") Integer quantidade);
+    @Query("SELECT CASE WHEN COUNT(p) > 0 THEN true ELSE false END " +
+            "FROM Pedido p " +
+            "JOIN p.itens i " +
+            "GROUP BY p.id " +
+            "HAVING COUNT(i) = :itemCount " +
+            "   AND SUM(CASE WHEN CONCAT(i.produto.id, '-', i.quantidade) IN :itens THEN 1 ELSE 0 END) = :itemCount")
+    Boolean existsPedidoWithSameStructure(@Param("itemCount") int itemCount, @Param("itens") List<String> itens);
+
 }
