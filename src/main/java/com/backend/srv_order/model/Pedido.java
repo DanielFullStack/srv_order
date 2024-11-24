@@ -18,10 +18,10 @@ public class Pedido {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String status; // e.g., RECEBIDO, PROCESSADO
+    private String status; // e.g., RECEBIDO, PROCESSADO, CANCELADO
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Produto> produtos;
+    private List<Item> itens;
 
     private Double valorTotal;
 

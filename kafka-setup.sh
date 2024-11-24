@@ -42,16 +42,16 @@ function create_topics() {
 function populate_topic() {
   echo "Populando tópico 'pedido-topic' com mensagens de exemplo..."
   kafka-console-producer --bootstrap-server $KAFKA_BROKER --topic pedido-topic <<EOF
-{"produtos":[{"nome":"Notebook","preco":5000.0},{"nome":"Mouse","preco":200.0}],"status":"RECEBIDO","valorTotal":null}
-{"produtos":[{"nome":"Teclado","preco":300.0},{"nome":"Monitor","preco":1500.0}],"status":"RECEBIDO","valorTotal":null}
-{"produtos":[{"nome":"Smartphone","preco":2500.0},{"nome":"Carregador","preco":100.0},{"nome":"Fone de Ouvido","preco":150.0}],"status":"RECEBIDO","valorTotal":null}
-{"produtos":[{"nome":"Impressora","preco":800.0},{"nome":"Papel A4","preco":50.0},{"nome":"Cartucho","preco":120.0}],"status":"RECEBIDO","valorTotal":null}
-{"produtos":[{"nome":"Webcam","preco":350.0},{"nome":"Microfone","preco":250.0}],"status":"RECEBIDO","valorTotal":null}
-{"produtos":[{"nome":"Tablet","preco":1200.0},{"nome":"Capa Protetora","preco":80.0}],"status":"RECEBIDO","valorTotal":null}
-{"produtos":[{"nome":"HD Externo","preco":400.0},{"nome":"Cabo USB","preco":30.0}],"status":"RECEBIDO","valorTotal":null}
-{"produtos":[{"nome":"Roteador","preco":180.0},{"nome":"Cabo de Rede","preco":45.0}],"status":"RECEBIDO","valorTotal":null}
-{"produtos":[{"nome":"Placa de Vídeo","preco":3500.0},{"nome":"Fonte de Alimentação","preco":450.0}],"status":"RECEBIDO","valorTotal":null}
-{"produtos":[{"nome":"SSD","preco":500.0},{"nome":"Memória RAM","preco":350.0}],"status":"RECEBIDO","valorTotal":null}
+{"itens":[{"quantidade":2,"produto":{"nome":"Arroz 5kg","preco":25.0}},{"quantidade":1,"produto":{"nome":"Feijão 1kg","preco":8.0}}],"status":"RECEBIDO","valorTotal":null}
+{"itens":[{"quantidade":1,"produto":{"nome":"Óleo de Soja","preco":9.0}},{"quantidade":1,"produto":{"nome":"Macarrão","preco":5.0}}],"status":"RECEBIDO","valorTotal":null}
+{"itens":[{"quantidade":2,"produto":{"nome":"Café 500g","preco":15.0}},{"quantidade":1,"produto":{"nome":"Açúcar 1kg","preco":6.0}},{"quantidade":1,"produto":{"nome":"Leite 1L","preco":7.0}}],"status":"RECEBIDO","valorTotal":null}
+{"itens":[{"quantidade":1,"produto":{"nome":"Farinha de Trigo","preco":8.0}},{"quantidade":1,"produto":{"nome":"Sal 1kg","preco":3.0}},{"quantidade":1,"produto":{"nome":"Fermento","preco":5.0}}],"status":"RECEBIDO","valorTotal":null}
+{"itens":[{"quantidade":2,"produto":{"nome":"Refrigerante 2L","preco":8.0}},{"quantidade":1,"produto":{"nome":"Suco 1L","preco":6.0}}],"status":"RECEBIDO","valorTotal":null}
+{"itens":[{"quantidade":1,"produto":{"nome":"Cerveja Pack","preco":35.0}},{"quantidade":1,"produto":{"nome":"Água Mineral","preco":2.0}}],"status":"RECEBIDO","valorTotal":null}
+{"itens":[{"quantidade":2,"produto":{"nome":"Molho de Tomate","preco":4.0}},{"quantidade":1,"produto":{"nome":"Extrato de Tomate","preco":3.0}}],"status":"RECEBIDO","valorTotal":null}
+{"itens":[{"quantidade":1,"produto":{"nome":"Biscoito","preco":5.0}},{"quantidade":1,"produto":{"nome":"Bolacha","preco":4.0}}],"status":"RECEBIDO","valorTotal":null}
+{"itens":[{"quantidade":2,"produto":{"nome":"Achocolatado","preco":12.0}},{"quantidade":1,"produto":{"nome":"Leite em Pó","preco":15.0}}],"status":"RECEBIDO","valorTotal":null}
+{"itens":[{"quantidade":1,"produto":{"nome":"Óleo de Milho","preco":12.0}},{"quantidade":1,"produto":{"nome":"Vinagre","preco":4.0}}],"status":"RECEBIDO","valorTotal":null}
 EOF
   echo "Mensagens enviadas para o tópico 'pedido-topic'."
 }
