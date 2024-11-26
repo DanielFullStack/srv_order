@@ -48,8 +48,15 @@ public class PedidoService {
         logger.info("Pedido com itens: {}", pedido.getItens());
 
         // Salva o pedido no banco
-        pedidoRepository.save(pedido);
+        processarPedido(pedido);
         logger.info("Pedido salvo com sucesso com ID: {}", pedido.getId());
+    }
+
+    public void processarPedido(Pedido pedido) {
+        logger.info("Iniciando processamento do pedido ID: {}", pedido.getId());
+        pedido.setStatus(PedidoStatusEnum.PROCESSADO.name());
+        kafkaProducer.enviarPedido(KafkaPedidoTopicEnum.PEDIDO_PROCESSADO_TOPIC.getTopic(), pedido);
+        pedidoRepository.save(pedido);
     }
 
     private void validarItensPedido(Pedido pedido) {
