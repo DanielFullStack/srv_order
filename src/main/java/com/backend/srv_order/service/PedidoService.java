@@ -48,8 +48,7 @@ public class PedidoService {
         logger.info("Pedido com itens: {}", pedido.getItens());
 
         // Salva o pedido no banco
-        Long id = pedidoRepository.save(pedido).getId();
-        processarPedido(id);
+        processarPedido(pedido);
         logger.info("Pedido salvo com sucesso com ID: {}", pedido.getId());
     }
 
@@ -120,13 +119,7 @@ public class PedidoService {
     }
 
     // Processa o pedido por ID e envia para outro tópico
-    public Pedido processarPedido(Long id) {
-        logger.info("Iniciando processamento do pedido ID: {}", id);
-        Pedido pedido = pedidoRepository.findById(id)
-                .orElseThrow(() -> {
-                    logger.error("Pedido não encontrado com ID: {}", id);
-                    return new RuntimeException("Pedido não encontrado com ID: " + id);
-                });
+    public Pedido processarPedido(Pedido pedido) {
         pedido.setStatus(PedidoStatusEnum.PROCESSADO.name());
         pedidoRepository.save(pedido);
         logger.info("Enviando pedido processado para o tópico Kafka");

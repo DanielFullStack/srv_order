@@ -48,18 +48,6 @@ public class PedidoController {
         return ResponseEntity.notFound().build();
     }
 
-    @Operation(summary = "Processar pedido", description = "Processa um pedido previamente enviado")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Pedido processado com sucesso"),
-            @ApiResponse(responseCode = "400", description = "Pedido inválido"),
-            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    })
-    @PutMapping("/{id}")
-    public ResponseEntity<Pedido> processarPedido(@PathVariable Long id) {
-        Pedido pedido = pedidoService.processarPedido(id);
-        return ResponseEntity.ok(pedido);
-    }
-
     @Operation(summary = "Cancelar pedido", description = "Cancela um pedido específico pelo ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Pedido cancelado com sucesso"),
